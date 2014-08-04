@@ -19,5 +19,6 @@
 @property (weak, nonatomic) id<CollageViewDelegate> delegate;
 
 - (void)configureWithImgUrlsArray:(NSArray *)imgUrlsArray;
+- (UIImage *)getCollageImage;
 
 @end

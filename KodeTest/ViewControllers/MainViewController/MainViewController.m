@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "AuthViewController.h"
 #import "CollageViewController.h"
+#import "PhotoPickerViewController.h"
 #import "InetProvider.h"
 
 @interface MainViewController () <InetProviderDelegate, UITextFieldDelegate>
@@ -21,16 +22,23 @@
 
 #pragma mark - Lifecycle
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateFrame];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.hidden = YES;
+    [self updateUI];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self setupUI];
     [self createObservers];
     [self createGetures];
 }
@@ -41,6 +49,25 @@
 }
 
 #pragma mark - Methods
+
+- (void)setupUI
+{
+    [self updateUI];
+    self.title = @"";
+    self.getCollageButton.titleLabel.font = [UIFont fontWithName:@"Appetite New" size:18];
+    [self.getCollageButton sizeToFit];
+}
+
+- (void)updateUI
+{
+    self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)updateFrame
+{
+    self.getCollageButton.centerX = self.view.center.x;
+    self.getCollageButton.y = self.txtUsername.y + self.txtUsername.height + 20;
+}
 
 - (void)createObservers
 {
@@ -58,8 +85,16 @@
 - (void)tokenReceivedNotification:(NSNotification *)note
 {
     self.token = note.object;
-    [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:TOKEN_KEY];
-    [InetProvider getUserIdByName:self.txtUsername.text delegate:self];
+
+    if(self.token.length)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:TOKEN_KEY];
+        [InetProvider getUserIdByName:self.txtUsername.text delegate:self];
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Токен пуст" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+    }
 }
 
 #pragma mark - Actions
@@ -75,7 +110,7 @@
     if(!self.token)
     {
         AuthViewController *authViewController = [[AuthViewController alloc] init];
-        [self presentViewController:authViewController animated:YES completion:nil];
+        [self.navigationController pushViewController:authViewController animated:YES];
     }
     else
     {
@@ -128,10 +163,11 @@
         NSMutableArray *imageUrlsArray = [NSMutableArray array];
         
         for(NSDictionary *dict in jsonData)
-            [imageUrlsArray addObject:dict[@"images"][@"low_resolution"][@"url"]];
+            [imageUrlsArray addObject:dict[@"images"][@"standard_resolution"][@"url"]];
         
-        CollageViewController *collageViewController = [[CollageViewController alloc] initWithImageUrlsArray:imageUrlsArray];
-        [self.navigationController pushViewController:collageViewController animated:YES];
+        PhotoPickerViewController *pickerViewController = [[PhotoPickerViewController alloc] initWithImageUrlsArray:imageUrlsArray];
+        
+        [self.navigationController pushViewController:pickerViewController animated:YES];
     }
     else
     {

@@ -9,7 +9,6 @@
 #import "InetProvider.h"
 #import "AFNetworking.h"
 
-#define BASE_URL @"https://api.instagram.com/"
 
 @implementation InetProvider
 

@@ -14,7 +14,6 @@
 @interface CollageViewController () <CollageViewDelegate>
 
 @property (weak, nonatomic) IBOutlet CollageView *collageView;
-@property (strong, nonatomic) NSArray *imgUrlsArray;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
@@ -23,23 +22,25 @@
 
 #pragma mark - Lifecycle
 
-- (id)initWithImageUrlsArray:(NSArray *)imgUrlsArray
-{
-    self = [super init];
-    if (self)
-    {
-        self.title = @"Коллаж";
-        self.imgUrlsArray = [NSArray arrayWithArray:imgUrlsArray];
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self setupUI];
+    [self createCollage];
+}
+
+#pragma mark - Methods
+
+- (void)setupUI
+{
+    self.title = @"Коллаж";
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.navigationBar.translucent = NO;
+}
+
+- (void)createCollage
+{
     [self.activityIndicator startAnimating];
     self.collageView.delegate = self;
     [self.collageView configureWithImgUrlsArray:self.imgUrlsArray];
@@ -53,30 +54,11 @@
     self.btnPrint.hidden = NO;
 }
 
-#pragma mark - Methods
-
-- (UIImage *) imageFromView: (UIView *) view
-{
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    
-    if (scale > 1)
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, scale);
-    else
-        UIGraphicsBeginImageContext(view.bounds.size);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [view.layer renderInContext: context];
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return viewImage;
-}
-
 #pragma mark - Actions
 
 - (IBAction)pressPrint:(id)sender
 {
-    UIImage *collageImage = [self imageFromView:self.collageView];
+    UIImage *collageImage = [self.collageView getCollageImage];
     
     UIPrintInteractionController *printer = [UIPrintInteractionController sharedPrintController];
     printer.printingItem = collageImage;

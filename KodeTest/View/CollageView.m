@@ -94,22 +94,22 @@
     }
 }
 
-- (UIImage *) imageFromView: (UIView *) view
+- (UIImage *)getCollageImage
 {
     CGFloat scale = [[UIScreen mainScreen] scale];
     
-    if (scale > 1) {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, scale);
-    } else {
-        UIGraphicsBeginImageContext(view.bounds.size);
-    }
+    if (scale > 1)
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, scale);
+    else
+        UIGraphicsBeginImageContext(self.bounds.size);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    [view.layer renderInContext: context];
+    [self.layer renderInContext: context];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return viewImage;
 }
+
 
 @end

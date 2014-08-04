@@ -1,6 +1,6 @@
 // UIImageView+AFNetworking.m
 //
-// Copyright (c) 2013-2014 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2013 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,8 @@
 
 #import "AFHTTPRequestOperation.h"
 
+#define ACTIVITY_INDICATOR_KEY @"ActivityIndicator"
+
 @interface AFImageCache : NSCache <AFImageCache>
 @end
 
@@ -35,9 +37,53 @@
 
 @interface UIImageView (_AFNetworking)
 @property (readwrite, nonatomic, strong, setter = af_setImageRequestOperation:) AFHTTPRequestOperation *af_imageRequestOperation;
+@property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 @end
 
 @implementation UIImageView (_AFNetworking)
+
+@dynamic activityIndicator;
+
+- (id)activityIndicator
+{
+    return objc_getAssociatedObject(self, ACTIVITY_INDICATOR_KEY);
+}
+
+- (void)setActivityIndicator:(id)newActivityIndicator
+{
+    objc_setAssociatedObject(self, ACTIVITY_INDICATOR_KEY, newActivityIndicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)startActivityIndicator
+{
+    if (self.activityIndicator == nil)
+    {
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.activityIndicator setHidesWhenStopped:YES];
+        self.activityIndicator.color = [UIColor whiteColor];
+        
+        self.activityIndicator.frame = self.bounds;
+        [self addSubview:self.activityIndicator];
+    }
+    [self.activityIndicator startAnimating];
+}
+
+- (void)stopActivityIndicator
+{
+    if (self.activityIndicator)
+    {
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
+        self.activityIndicator = nil;
+    }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    self.activityIndicator.frame = self.bounds;
+}
 
 + (NSOperationQueue *)af_sharedImageRequestOperationQueue {
     static NSOperationQueue *_af_sharedImageRequestOperationQueue = nil;
@@ -125,12 +171,18 @@
 {
     [self cancelImageRequestOperation];
 
+//    self.image = nil;
+//    if(!placeholderImage)
+        [self startActivityIndicator];
+
     UIImage *cachedImage = [[[self class] sharedImageCache] cachedImageForRequest:urlRequest];
     if (cachedImage) {
         if (success) {
+            [self stopActivityIndicator];
             success(nil, nil, cachedImage);
         } else {
             self.image = cachedImage;
+            [self stopActivityIndicator];
         }
 
         self.af_imageRequestOperation = nil;
@@ -138,6 +190,8 @@
         if (placeholderImage) {
             self.image = placeholderImage;
         }
+        else
+            self.image = nil;
         
         __weak __typeof(self)weakSelf = self;
         self.af_imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
@@ -146,26 +200,25 @@
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             if ([[urlRequest URL] isEqual:[strongSelf.af_imageRequestOperation.request URL]]) {
                 if (success) {
+                    [weakSelf stopActivityIndicator];
                     success(urlRequest, operation.response, responseObject);
                 } else if (responseObject) {
-                    strongSelf.image = responseObject;
-                }
+                    CATransition *transition = [CATransition animation];
+                    transition.duration = 0.3f;
+                    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                    transition.type = kCATransitionFade;
+                    [strongSelf.layer addAnimation:transition forKey:nil];
 
-                if (operation == strongSelf.af_imageRequestOperation){
-                        strongSelf.af_imageRequestOperation = nil;
+                    strongSelf.image = responseObject;
+                    [weakSelf stopActivityIndicator];
                 }
             }
 
             [[[strongSelf class] sharedImageCache] cacheImage:responseObject forRequest:urlRequest];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            if ([[urlRequest URL] isEqual:[strongSelf.af_imageRequestOperation.request URL]]) {
+            if ([[urlRequest URL] isEqual:[operation.request URL]]) {
                 if (failure) {
                     failure(urlRequest, operation.response, error);
-                }
-
-                if (operation == strongSelf.af_imageRequestOperation){
-                        strongSelf.af_imageRequestOperation = nil;
                 }
             }
         }];

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define BASE_URL @"https://api.instagram.com/"
+
 @protocol InetProviderDelegate <NSObject>
 
 @optional

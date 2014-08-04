@@ -11,5 +11,6 @@
 @interface MainViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;
+@property (weak, nonatomic) IBOutlet UIButton *getCollageButton;
 
 @end

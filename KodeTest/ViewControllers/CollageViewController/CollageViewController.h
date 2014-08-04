@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CollageViewController : UIViewController
+@interface CollageViewController : PhotoCollectionViewController
 
 @property (weak, nonatomic) IBOutlet UIButton *btnPrint;
 
-- (id)initWithImageUrlsArray:(NSArray *)imgUrlsArray;
 - (IBAction)pressPrint:(id)sender;
 
 @end
