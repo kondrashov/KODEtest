@@ -56,6 +56,22 @@
     self.title = @"";
     self.getCollageButton.titleLabel.font = [UIFont fontWithName:@"Appetite New" size:18];
     [self.getCollageButton sizeToFit];
+    
+    self.containerView.x = IS_RETINA ? 19.5 : 19;
+    self.containerView.y = IS_IPHONE_5 ? 216 : 172;
+    [self performSelector:@selector(showInputField) withObject:nil afterDelay:0.5];
+}
+
+- (void)showInputField
+{
+    [UIView animateWithDuration:1 animations:^{
+        self.containerView.y = IS_IPHONE_5 ? 100 : 60;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.5 animations:^{
+             self.txtUsername.alpha = 1;
+             self.getCollageButton.alpha = 1;
+         }];
+    }];
 }
 
 - (void)updateUI
@@ -65,7 +81,7 @@
 
 - (void)updateFrame
 {
-    self.getCollageButton.centerX = self.view.center.x;
+    self.getCollageButton.centerX = self.txtUsername.center.x;
     self.getCollageButton.y = self.txtUsername.y + self.txtUsername.height + 20;
 }
 
@@ -90,6 +106,7 @@
     {
         [[NSUserDefaults standardUserDefaults] setObject:self.token forKey:TOKEN_KEY];
         [InetProvider getUserIdByName:self.txtUsername.text delegate:self];
+        [SVProgressHUD showWithStatus:@"Загрузка фото..." maskType:SVProgressHUDMaskTypeBlack];
     }
     else
     {
@@ -107,6 +124,7 @@
         return;
     }
     
+    [self.txtUsername resignFirstResponder];
     if(!self.token)
     {
         AuthViewController *authViewController = [[AuthViewController alloc] init];
@@ -114,6 +132,7 @@
     }
     else
     {
+        [SVProgressHUD showWithStatus:@"Загрузка фото..." maskType:SVProgressHUDMaskTypeBlack];
         [InetProvider getUserIdByName:self.txtUsername.text delegate:self];
     }
 }
@@ -145,19 +164,22 @@
     }
     else
     {
+        [SVProgressHUD dismiss];
         [[[UIAlertView alloc] initWithTitle:nil message:@"Такого пользователя не существует" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
 }
 
 - (void)getUserIdByNameFailedWithError:(NSError *)error
 {
+    [SVProgressHUD dismiss];
     [[[UIAlertView alloc] initWithTitle:nil message:@"Сервер не отвечает либо такого пользователя не существует" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 - (void)getUserPhotoSuccess:(id)json
 {
+    [SVProgressHUD dismiss];
+    
     NSArray *jsonData = [json objectForKey:@"data"];
-
     if(jsonData.count)
     {
         NSMutableArray *imageUrlsArray = [NSMutableArray array];
@@ -167,6 +189,7 @@
         
         PhotoPickerViewController *pickerViewController = [[PhotoPickerViewController alloc] initWithImageUrlsArray:imageUrlsArray];
         
+         [SVProgressHUD dismiss];
         [self.navigationController pushViewController:pickerViewController animated:YES];
     }
     else
@@ -177,6 +200,7 @@
 
 - (void)getUserPhotoFailedWithError:(NSError *)error
 {
+    [SVProgressHUD dismiss];
     [[[UIAlertView alloc] initWithTitle:nil message:@"Пользователь закрыл доступ к своим фото" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 

@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;
 @property (weak, nonatomic) IBOutlet UIButton *getCollageButton;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 @end

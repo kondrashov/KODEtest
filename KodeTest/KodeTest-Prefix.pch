@@ -15,5 +15,6 @@
     #import <Foundation/Foundation.h>
     #import "Consts.h"
     #import "UIView+Helpers.h"
+    #import "Helpers.h"
     #import "PhotoCollectionViewController.h"
 #endif

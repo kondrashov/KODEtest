@@ -48,6 +48,9 @@
 		D3AA3134198E8B2300572957 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = D3AA3123198E8B2300572957 /* UIWebView+AFNetworking.m */; };
 		D3AA3138198F542900572957 /* AppetiteNew.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3AA3137198F542900572957 /* AppetiteNew.otf */; };
 		D3AA313D198F562D00572957 /* UIView+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D3AA313C198F562D00572957 /* UIView+Helpers.m */; };
+		D3B7E487198FBA8000ACA992 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B7E486198FBA8000ACA992 /* Helpers.m */; };
+		D3B7E492198FCD3E00ACA992 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D3B7E48F198FCD3E00ACA992 /* SVProgressHUD.bundle */; };
+		D3B7E493198FCD3E00ACA992 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B7E491198FCD3E00ACA992 /* SVProgressHUD.m */; };
 		D3FD25721980047F0055D65B /* InetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FD25711980047F0055D65B /* InetProvider.m */; };
 		D3FD257C198036F10055D65B /* CollageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FD257B198036F10055D65B /* CollageView.m */; };
 		D3FD257E1980E1D70055D65B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FD257D1980E1D70055D65B /* QuartzCore.framework */; };
@@ -135,6 +138,11 @@
 		D3AA3137198F542900572957 /* AppetiteNew.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppetiteNew.otf; sourceTree = "<group>"; };
 		D3AA313B198F562D00572957 /* UIView+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Helpers.h"; sourceTree = "<group>"; };
 		D3AA313C198F562D00572957 /* UIView+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Helpers.m"; sourceTree = "<group>"; };
+		D3B7E485198FBA8000ACA992 /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
+		D3B7E486198FBA8000ACA992 /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
+		D3B7E48F198FCD3E00ACA992 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		D3B7E490198FCD3E00ACA992 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		D3B7E491198FCD3E00ACA992 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		D3FD2536197FE7080055D65B /* Consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Consts.h; sourceTree = "<group>"; };
 		D3FD25701980047F0055D65B /* InetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InetProvider.h; sourceTree = "<group>"; };
 		D3FD25711980047F0055D65B /* InetProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InetProvider.m; sourceTree = "<group>"; };
@@ -212,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				D3FD2536197FE7080055D65B /* Consts.h */,
+				D3B7E484198FBA8000ACA992 /* Helpers */,
 				D3AA313A198F562D00572957 /* Categories */,
 				D3FD256F198004560055D65B /* Web */,
 				D3AA30FD198E8B2300572957 /* 3rdParty */,
@@ -261,8 +270,8 @@
 				D32CB885198DEF9E00F3950E /* Base */,
 				D3AA30E4198DFB2500572957 /* MainViewController */,
 				D3AA30DD198DFB2500572957 /* AuthViewController */,
-				D3AA30E0198DFB2500572957 /* CollageViewController */,
 				D3AA30E8198DFB2500572957 /* PhotoPickerViewController */,
+				D3AA30E0198DFB2500572957 /* CollageViewController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -320,6 +329,7 @@
 		D3AA30FD198E8B2300572957 /* 3rdParty */ = {
 			isa = PBXGroup;
 			children = (
+				D3B7E48E198FCD3E00ACA992 /* SVProgressHUD */,
 				D3AA30FE198E8B2300572957 /* AFNetworking */,
 				D3AA3112198E8B2300572957 /* UIKit+AFNetworking */,
 			);
@@ -399,6 +409,25 @@
 				D3AA313C198F562D00572957 /* UIView+Helpers.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		D3B7E484198FBA8000ACA992 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D3B7E485198FBA8000ACA992 /* Helpers.h */,
+				D3B7E486198FBA8000ACA992 /* Helpers.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D3B7E48E198FCD3E00ACA992 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				D3B7E48F198FCD3E00ACA992 /* SVProgressHUD.bundle */,
+				D3B7E490198FCD3E00ACA992 /* SVProgressHUD.h */,
+				D3B7E491198FCD3E00ACA992 /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
 		D3FD256F198004560055D65B /* Web */ = {
@@ -497,6 +526,7 @@
 				D3AA30EE198DFB2500572957 /* CollageViewController.xib in Resources */,
 				D3AA30F2198DFB2500572957 /* PhotoPickerViewController.xib in Resources */,
 				D3AA3138198F542900572957 /* AppetiteNew.otf in Resources */,
+				D3B7E492198FCD3E00ACA992 /* SVProgressHUD.bundle in Resources */,
 				D3AA30F8198DFCA000572957 /* PhotoPickerCell.xib in Resources */,
 				D3AA30F0198DFB2500572957 /* MainViewController.xib in Resources */,
 				D372F413197FE0FA00B2D409 /* InfoPlist.strings in Resources */,
@@ -527,6 +557,7 @@
 				D3AA312F198E8B2300572957 /* UIAlertView+AFNetworking.m in Sources */,
 				D3AA312D198E8B2300572957 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				D3AA3125198E8B2300572957 /* AFHTTPRequestOperationManager.m in Sources */,
+				D3B7E487198FBA8000ACA992 /* Helpers.m in Sources */,
 				D3AA3130198E8B2300572957 /* UIButton+AFNetworking.m in Sources */,
 				D3AA312E198E8B2300572957 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				D3FD25721980047F0055D65B /* InetProvider.m in Sources */,
@@ -535,6 +566,7 @@
 				D372F419197FE0FA00B2D409 /* AppDelegate.m in Sources */,
 				D3AA30F1198DFB2500572957 /* PhotoPickerViewController.m in Sources */,
 				D3FD257C198036F10055D65B /* CollageView.m in Sources */,
+				D3B7E493198FCD3E00ACA992 /* SVProgressHUD.m in Sources */,
 				D3AA312C198E8B2300572957 /* AFURLSessionManager.m in Sources */,
 				D3AA312B198E8B2300572957 /* AFURLResponseSerialization.m in Sources */,
 				D3AA313D198F562D00572957 /* UIView+Helpers.m in Sources */,

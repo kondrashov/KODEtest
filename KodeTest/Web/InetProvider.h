@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SVProgressHUD.h"
 
 #define BASE_URL @"https://api.instagram.com/"
 
