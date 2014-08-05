@@ -9,8 +9,6 @@
 #import "CollageView.h"
 #import "UIImageView+AFNetworking.h"
 
-#define MAX_IMAGE_COUNT     12
-
 @interface CollageView ()
 {
     NSInteger maxImageCount;

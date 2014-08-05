@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 KODE. All rights reserved.
 //
 
+#define MAX_IMAGE_COUNT     12
+
 #define TOKEN_KEY @"TOKEN_KEY"
 #define USERID_KEY @"USERID_KEY"
 
