@@ -183,9 +183,28 @@
     if(jsonData.count)
     {
         NSMutableArray *imageUrlsArray = [NSMutableArray array];
-        
+        NSMutableArray *imageInfoArray = [NSMutableArray array];
+
         for(NSDictionary *dict in jsonData)
-            [imageUrlsArray addObject:dict[@"images"][@"standard_resolution"][@"url"]];
+        {
+            NSDictionary *infoDict = @{@"like_count": dict[@"likes"][@"count"],
+                                       @"image_url" : dict[@"images"][@"low_resolution"][@"url"]};
+            [imageInfoArray addObject:infoDict];
+        }
+        
+        // Sorting photo by likes count
+        
+        [imageInfoArray sortUsingComparator:^NSComparisonResult(NSDictionary * dict1, NSDictionary *dict2) {
+            if([dict1[@"like_count"] longValue] > [dict2[@"like_count"] longValue])
+                return NSOrderedAscending;
+            else if ([dict1[@"like_count"] longValue] < [dict2[@"like_count"] longValue])
+                return NSOrderedDescending;
+            else
+                return NSOrderedSame;
+        }];
+        
+        for(NSDictionary *dict in imageInfoArray)
+            [imageUrlsArray addObject:dict[@"image_url"]];
         
         PhotoPickerViewController *pickerViewController = [[PhotoPickerViewController alloc] initWithImageUrlsArray:imageUrlsArray];
         

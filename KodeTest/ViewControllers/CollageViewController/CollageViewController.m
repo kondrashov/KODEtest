@@ -37,6 +37,7 @@
     self.title = @"Коллаж";
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.navigationBar.translucent = NO;
+    self.btnPrint.titleLabel.font = [UIFont fontWithName:@"Appetite New" size:14];
 }
 
 - (void)createCollage

@@ -64,7 +64,7 @@
 
 - (IBAction)pressPickerButton:(id)sender
 {
-    if(!self.pickerImage.image)
+    if(!self.pickerImage.image && sender)
         return;
     
     self.pickerButton.selected = !self.pickerButton.selected;

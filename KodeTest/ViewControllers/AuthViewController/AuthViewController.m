@@ -99,6 +99,11 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [self.activityIndicator stopAnimating];
+    
+    if([error.userInfo[@"NSErrorFailingURLStringKey"] rangeOfString:@"oauth/authorize"].location != NSNotFound)
+    {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Сервер не отвечает или отсутствует соединение с интернетом" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
 }
 
 @end

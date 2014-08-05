@@ -7,14 +7,20 @@
 //
 
 #import "PhotoPickerViewController.h"
+#import "CollageViewController.h"
 
 #define TOP_BORDER_INSET        10
-#define BOTTOM_BORDER_INSET     10
 
 @interface PhotoPickerViewController ()
+{
+    BOOL isCheckAll;
+}
 
 @property (strong, nonatomic) NSMutableArray *checkedStatesArray;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *footerView;
+@property (weak, nonatomic) IBOutlet UIButton *checkAllButton;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end
 
@@ -40,7 +46,18 @@
     [self.collectionView registerNib:[UINib nibWithNibName:[PhotoPickerCell cellReuseId] bundle:nil] forCellWithReuseIdentifier:[PhotoPickerCell cellReuseId]];
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
-    layout.sectionInset = UIEdgeInsetsMake(TOP_BORDER_INSET, 0, BOTTOM_BORDER_INSET, 0);    
+    layout.sectionInset = UIEdgeInsetsMake(TOP_BORDER_INSET, 0, self.footerView.height + TOP_BORDER_INSET, 0);
+}
+
+- (void)checkAllPhoto
+{
+    isCheckAll = !isCheckAll;
+    [self.checkedStatesArray removeAllObjects];
+    
+    for(int i = 0; i < self.imgUrlsArray.count; i++)
+        [self.checkedStatesArray addObject:@(isCheckAll)];
+
+    [self.collectionView reloadData];
 }
 
 - (void)prepareCheckedArray
@@ -80,5 +97,38 @@
     [self.checkedStatesArray replaceObjectAtIndex:indexPath.row withObject:@(!curentValue)];
 }
 
+#pragma mark - Actions
+
+- (IBAction)pressCheckAllButton:(id)sender
+{
+    [self checkAllPhoto];
+    NSString *title = isCheckAll ? @"Убрать выделение" : @"Выбрать все";
+
+    [UIView performWithoutAnimation:^{
+        [self.checkAllButton setTitle:title forState:UIControlStateNormal];
+        [self.checkAllButton sizeToFit];
+    }];
+}
+
+- (IBAction)pressDoneButton:(id)sender
+{
+    NSMutableArray *resultArray = [NSMutableArray array];;
+    for(int i = 0; i < self.imgUrlsArray.count; i++)
+    {
+        if([self.checkedStatesArray[i] boolValue] == YES)
+           [resultArray addObject:self.imgUrlsArray[i]];
+    }
+    
+    if(resultArray.count)
+    {
+        CollageViewController *collageViewController = [[CollageViewController alloc] initWithImageUrlsArray:resultArray];
+        [self.navigationController pushViewController:collageViewController animated:YES];
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Вы не выбрали ни одного фото" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        
+    }
+}
 
 @end

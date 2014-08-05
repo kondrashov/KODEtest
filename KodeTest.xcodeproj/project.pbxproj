@@ -228,8 +228,8 @@
 				D372F437197FE13100B2D409 /* ViewControllers */,
 				D372F417197FE0FA00B2D409 /* AppDelegate.h */,
 				D372F418197FE0FA00B2D409 /* AppDelegate.m */,
-				D3AA3135198F542900572957 /* Resources */,
 				D372F41A197FE0FA00B2D409 /* Images.xcassets */,
+				D3AA3135198F542900572957 /* Resources */,
 				D372F40F197FE0FA00B2D409 /* Supporting Files */,
 			);
 			path = KodeTest;
